@@ -10,11 +10,23 @@
 <body>
 	<canvas id="myCanvas" width="1360" height="655" style="border:1px solid #d3d3d3; top: 45%; left: 55%;">Your browser does not support the HTML5 canvas tag.</canvas>
 	<script type = "text/javascript">
-		var times = [10, 60, 300, 600];
+		var times = [600, 60, 60, 10, 600, 300, 300, 60, 60, 60, 10, 10, 10, 10, 10, 10, 10, 300, 10, 10, 10, 10, 10, 10, 10, 10, 600, 10, 10, 10, 10, 10, 10];
 		var timechoice = 0;
 	    var circletime = 2;
 	    var time = times[timechoice];
+	    drawStart();
 		var myVar = setInterval(draw, 1000);
+		function drawStart(){
+			var c = document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			ctx.clearRect(0, 0, c.width, c.height);
+			ctx.beginPath();
+			ctx.arc(778, 343, 50, 0, circletime * Math.PI);
+			ctx.font="20px Georgia";
+			ctx.textAlign = "center";
+			ctx.fillText(time,778,346);
+			ctx.stroke();
+		}
 		function draw(){
 			var c = document.getElementById("myCanvas");
 			var ctx = c.getContext("2d");
@@ -25,18 +37,23 @@
 			ctx.textAlign = "center";
 			ctx.fillText(time,778,346);
 			ctx.stroke();
-			if(time > 0) {
+			if(time >= 0) {
 				time -= 1;
 				circletime -= 2/times[timechoice];
 			}
-			if(time <= 0) {
+			if(time < 0) {
+				var timebutton = document.getElementById("timebutton");
+				timebutton.style.visibility = "hidden";
+				ctx.font="72px Georgia";
+				ctx.textAlign = "center";
+				ctx.fillText("TIME UP",680,250);
 				time = 0;
 				circletime = 0;
 			}
 		}
 		function reset(){
 			circletime = 2;
-			timechoice = (timechoice + 1) % 4;
+			timechoice = (timechoice + 1) % times.length;
 	        time = times[timechoice];
 			var c = document.getElementById("myCanvas");
 			var ctx = c.getContext("2d");
@@ -49,6 +66,6 @@
 			ctx.stroke();
 		}
 	</script>
-	<input type="button" value="Press to Reset" id = "door1" onclick = "reset()"; style="position: absolute; top: 45%; left: 45%; height: 100px; width: 100px;">
+	<input type="button" value="Press to Reset" id = "timebutton" onclick = "reset()"; style="position: absolute; top: 45%; left: 45%; height: 100px; width: 100px;">
 </body>
 </html>
